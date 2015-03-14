@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: Tecnológico de Costa Rica
+// Company: TecnolÃ³gico de Costa Rica
 // Engineer: Kaled Alfaro e Irene Rivera
 // 
 // Create Date:    13:22:48 03/14/2015 
@@ -24,7 +24,8 @@ module control_ps2(
 	input wire enter,
 	input wire dato,
 	output reg salvar,
-	output wire [1:0]EstadoTipoDato
+	output wire [1:0]EstadoTipoDato,
+	output reg DatosListos
     );
 	 
 	localparam [1:0]
@@ -58,7 +59,7 @@ module control_ps2(
 			state_next = state_reg;
 			salvar = 1'b0;
 			Cuenta_next = Cuenta_reg;
-			
+			DatosListos = 1'b0;
 			case (state_reg)
 				Inicio:
 					if(ctrl)
@@ -78,7 +79,10 @@ module control_ps2(
 						end
 				Fin:
 					if(fin)
+					begin
 						state_next = Inicio;
+						DatosListos = 1'b1;
+					end
 					else
 						state_next = Enter;
 			endcase	
