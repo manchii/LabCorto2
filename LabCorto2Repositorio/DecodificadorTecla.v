@@ -48,7 +48,7 @@ wire yn_deco;
 	begin
 		if(rst)
 		begin
-			temp_reg <= 4'b0;
+			temp_reg <= 5'b0;
 			ign_reg <= 1'b0;
 			pres_reg <= 1'b0;
 		end

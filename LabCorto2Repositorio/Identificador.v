@@ -54,7 +54,7 @@ wire temp_key;
 					dato = temp_key;
 				ignicion:
 					dato = ykey_nkey;
-				precensia:
+				presencia:
 					dato = ykey_nkey;
 			endcase
 		end

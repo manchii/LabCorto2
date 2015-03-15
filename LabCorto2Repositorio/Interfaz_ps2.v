@@ -23,11 +23,12 @@ module Interfaz_ps2(
 	input wire clk,rst,
 	output wire [4:0] temperatura,
 	output wire ignicion,
-	output wire presencia
+	output wire presencia,
 	output wire DatosListos
     );
 
-wire rx_done_tick, Dato_rx;
+wire rx_done_tick; 
+wire [7:0] Dato_rx;
 wire Filtro_enable;
 wire [1:0] EstadoTipoDato;
 wire ctrl, enter, dato;
@@ -36,7 +37,7 @@ wire salvar;
 
 recieve_data modulorecepcion(
 	.clk(clk),
-	.rst(rst),
+	.reset(rst),
 	.ps2d(ps2d),
 	.ps2c(ps2c),
 	.rx_en(1'b1),
@@ -49,7 +50,7 @@ FiltroTecla modulofiltrotecla(
 	.rst(rst),
 	.rx_done_tick(rx_done_tick),
 	.Dato_rx(Dato_rx),
-	.Filtro_enable(Filtro_enable)
+	.filtro_enable(Filtro_enable)
 );
 
 Identificador moduloidentificador(
@@ -72,6 +73,16 @@ DecodificadorTecla moduloDecodificadorTecla(
 	.presencia(presencia)
 );
 
+control_ps2 modulocontrolps2(
+	.clk(clk),
+	.rst(rst),
+	.ctrl(ctrl),
+	.enter(enter),
+	.dato(dato),
+	.salvar(salvar),
+	.EstadoTipoDato(EstadoTipoDato),
+	.DatosListos(DatosListos)
+);
 
 endmodule
 

@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: Tecnológico de Costa Rica
+// Company: Tecnolgico de Costa Rica
 // Engineer: Kaled Alfaro e Irene Rivera
 // 
 // Create Date:    14:40:30 03/14/2015 
@@ -22,7 +22,7 @@ module Proyecto_1(
 	input wire [4:0] Temperatura,
 	input wire Presencia,
 	input wire Ignicion,
-	input wire datos_listos,
+	input wire DatosListos,
 	input wire clk,rst,
 	output wire Ventilacion,
 	output wire Alarma,
@@ -58,9 +58,10 @@ begin
 	endcase
 end
 
+
+
 //Inicio de descripcion
-assign Dato_listo = Dato_listo_Temp0 | Dato_listo_Temp1 | Dato_listo_Temp2 | Dato_listo_Temp3 | Dato_listo_Temp4 |
-	Dato_listo_Presencia | Dato_listo_Ignicion;
+
 
 
 
@@ -68,8 +69,8 @@ LogicaDeActivacion ModulodeActivacion(
 	.Alerta(Alerta),//2bits
 	.rst(rst),//2bits
 	.clk(clk),//1bit
-	.Presencia(Presencia_Sincronizada),//1bit
-	.Ignicion(Ignicion_Sincronizada),//1bit
+	.Presencia(Presencia),//1bit
+	.Ignicion(Ignicion),//1bit
 	.Activar_Decidir(Activar_Decidir),//1bit,
 	.Alarma(Alarma),//1bit
 	.Ventilacion(Ventilacion),//1bit
@@ -103,13 +104,13 @@ Deco7Seg ModuloDeco7seg_Decenas(
 );
 
 ConversorBCD ModuloConversorBCD (
-	.Temperatura_sincronizada(Temperatura_Sincronizada), //5bits
+	.Temperatura_sincronizada(Temperatura), //5bits
 	.Decenas(Decenas_BCD), //4bits
 	.Unidades(Unidades_BCD) //4bits
 );
 
 Control ModuloControl (
-	.Dato_listo(Datos_listos),//1bit
+	.Dato_listo(DatosListos),//1bit
 	.Peligro(Peligro),//1bit
 	.rst(rst),//1bit
 	.clk(clk),
