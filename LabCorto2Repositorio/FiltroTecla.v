@@ -56,6 +56,8 @@ localparam [1:0]
 			f0:
 				if(Dato_rx==8'hf0)
 					filtro_sig = espera;
+				else
+					filtro_sig = idle;
 			espera:
 				if(rx_done_tick)
 				begin
