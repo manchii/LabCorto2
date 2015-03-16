@@ -82,6 +82,7 @@ module control_ps2(
 					begin
 						state_next = Inicio;
 						DatosListos = 1'b1;
+						Cuenta_next = 2'h0;
 					end
 					else
 						state_next = Enter;

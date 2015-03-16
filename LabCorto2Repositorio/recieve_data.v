@@ -87,7 +87,7 @@ begin
 	dps:
 		if(fall_edge)
 		begin
-		if(n_reg>0)
+		if(n_reg>1)
 			b_next = {ps2d, b_reg[7:1]};
 		if (n_reg==0)
 			state_next = load;
