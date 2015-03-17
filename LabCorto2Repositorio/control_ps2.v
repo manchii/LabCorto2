@@ -20,14 +20,19 @@
 //////////////////////////////////////////////////////////////////////////////////
 module control_ps2(
 	input wire clk,rst,
+//Teclas de control
 	input wire ctrl,
 	input wire enter,
 	input wire dato,
+//--------------------------
+//Salidas
 	output reg salvar,
 	output wire [1:0]EstadoTipoDato,
 	output reg DatosListos
     );
-	 
+ 
+ //declaración de los estados: Inicio, Enter, Dato y Fin
+ //Se declara cual el número de cuenta al que corresponde cadfa estado
 	localparam [1:0]
 		Inicio = 2'b00,
 		Enter = 2'b01,
@@ -61,6 +66,7 @@ module control_ps2(
 			Cuenta_next = Cuenta_reg;
 			DatosListos = 1'b0;
 			case (state_reg)
+//Se declara en que momento debe darse cada estado
 				Inicio:
 					if(ctrl)
 						state_next = Enter;
@@ -69,6 +75,7 @@ module control_ps2(
 					if(enter)
 						begin
 							Cuenta_next = Cuenta_reg+1'b1;
+							//si la situación se cumple se suma uno a la cuenta y se pasa al siguiente estado
 							state_next = Dato;
 						end
 				Dato:
