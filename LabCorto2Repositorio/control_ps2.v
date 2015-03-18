@@ -10,6 +10,8 @@
 // Target Devices: 
 // Tool versions: 
 // Description: 
+//		Módulo encargado de diferenciar las teclas permitidas, este módulo se encarga de establecer el protocolo de
+//		funcionamiento entre el teclado y el módulo de detección de peligro
 //
 // Dependencies: 
 //
@@ -40,7 +42,8 @@ module control_ps2(
 		Fin = 2'b11;
 		
 	reg [1:0] state_reg, state_next;
-	reg [1:0] Cuenta_reg, Cuenta_next;
+	reg [1:0] Cuenta_reg, Cuenta_next;//se define el contador que existe dentro de la máquina
+					 //este esta encargado de avanzar de estado.
 	wire fin;
 	
 	assign fin = (Cuenta_reg == 2'b11);
@@ -69,20 +72,22 @@ module control_ps2(
 //Se declara en que momento debe darse cada estado
 				Inicio:
 					if(ctrl)
-						state_next = Enter;
+						state_next = Enter;//si la tecla entrante corresponde a la tecla ctrl se avanza al siguiente estado
+								  //de lo contrario se mantendrá en este hasta que sea la tecla correspondiente
 						
 				Enter:
 					if(enter)
 						begin
 							Cuenta_next = Cuenta_reg+1'b1;
 							//si la situación se cumple se suma uno a la cuenta y se pasa al siguiente estado
-							state_next = Dato;
+							state_next = Dato;//si la tecla es enter se avanza al estado Dato.
 						end
 				Dato:
 					if(dato)
 						begin
 							state_next = Fin;
 							salvar = 1'b1;
+							//si se ingresa un dato se avanza al estado Fin y se envia un bit en alto a la salida salvar
 						end
 				Fin:
 					if(fin)
@@ -90,9 +95,11 @@ module control_ps2(
 						state_next = Inicio;
 						DatosListos = 1'b1;
 						Cuenta_next = 2'h0;
+						//dada la condición de fin se regresa al estado Inicio y se envian un bit en 1 a DatosListos y dos bits
+						//en hexadecimal en cero a Cuenta_next
 					end
 					else
-						state_next = Enter;
+						state_next = Enter;//si no se cumple la condicion de finalizacion se regresa al estado de Enter.
 			endcase	
 		end
 	 
