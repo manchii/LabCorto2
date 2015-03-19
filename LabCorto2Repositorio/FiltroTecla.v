@@ -29,6 +29,7 @@ module FiltroTecla(
 	//Señal de permiso a leer
 	output reg filtro_enable
     );
+//se declaran los estados y sus valores iniciales
 localparam [1:0]
 	idle = 2'h0,
 	f0 = 2'h1,
@@ -51,21 +52,24 @@ localparam [1:0]
 		filtro_enable = 1'b0;
 		case(filtro_reg)
 			idle:
-				if(rx_done_tick)
+				if(rx_done_tick)//espera a que el teclado envie el mensaje de mensaje enviado para empezar la maquina
 					filtro_sig = f0;
 			f0:
-				if(Dato_rx==8'hf0)
-					filtro_sig = espera;
+				if(Dato_rx==8'hf0)//revisa si el dato que ingresa corresponde a un f0 en hexadecimal 
+					filtro_sig = espera;//si se cumple la condicion se avanza al estado de espera
 				else
-					filtro_sig = idle;
+					filtro_sig = idle;//si no se cumple se regresa al estado de idle
 			espera:
-				if(rx_done_tick)
+				if(rx_done_tick)//espera que llegue de nuevo el aviso desde el teclado que se envio un codigo de tecla
 				begin
+					//de darse la condicion se avanza al estado de leer  el dato de tecla que entro
+					//luego envia un bit en alto para el enable
 					filtro_sig = leer;
 					filtro_enable = 1'b1;
 				end
 			leer:
 			begin
+				//habilita el....
 				filtro_enable = 1'b1;
 				filtro_sig = idle;
 			end	
