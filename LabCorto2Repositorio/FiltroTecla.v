@@ -69,7 +69,7 @@ localparam [1:0]
 				end
 			leer:
 			begin
-				//habilita el....
+				//habilita el módulo siguiente 
 				filtro_enable = 1'b1;
 				filtro_sig = idle;
 			end	
