@@ -10,7 +10,7 @@
 // Target Devices: 
 // Tool versions: 
 // Description: 
-//
+//	Módulo encargado para identificar las teclas hábiles para registrar y enviar banderas a control
 // Dependencies: 
 //
 // Revision: 
@@ -31,12 +31,16 @@ module Identificador(
 	output reg enter,
 	output reg dato
     );
+//Declaración simbólica para el tipo de dato para la variable de tipo de dato
 localparam [1:0]
 	temperatura = 2'h1,
 	ignicion = 2'h2,
 	presencia = 2'h3;
 
+//Asignación de la afirmación si se trata el mensaje de un dato capturado correspondiente a la tecla 'y' o 'n'
 wire ykey_nkey; 
+
+//Asignación de la afirmación si se trata el mensaje de un dato capturado correspondiente a la tecla numérica de 0 a 8
 wire temp_key;
 
 	//Comportamiento del identificador de tecla
@@ -45,10 +49,13 @@ wire temp_key;
 		ctrl = 0;
 		enter = 0;
 		dato = 0;
-		if(filtro_enable == 1'b1)
+		if(filtro_enable == 1'b1) //habilitado por el filtro las salidas.
 		begin		
+			//Caso de ctrl 
 			ctrl = (Dato_rx == 8'h14) ? 1'b1 : 1'b0;
+			//Caso de enter
 			enter = (Dato_rx == 8'h5a) ? 1'b1 : 1'b0;
+			//Caso sobre tipo de dato
 			case(EstadoTipoDato)
 				temperatura:
 					dato = temp_key;
@@ -59,6 +66,7 @@ wire temp_key;
 			endcase
 		end
 	end
+	
 	assign temp_key = 	(Dato_rx == 8'h45) ? 1'b1 : //'0'	
 				(Dato_rx == 8'h16) ? 1'b1 : //'1'
 				(Dato_rx == 8'h1e) ? 1'b1 : //'2'
