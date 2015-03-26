@@ -10,7 +10,8 @@
 // Target Devices:
 // Tool versions:
 // Description:
-//
+//	Módulo de recepción de datos en protocolo PS/2
+//	Tomado del Pong P. Chu
 // Dependencies:
 //
 // Revision:
@@ -19,15 +20,20 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module recieve_data(
+//Señales del clk y reset
 	input wire clk, reset,
-	input wire ps2d, ps2c, rx_en,
-	output reg rx_done_tick,
-	output wire [7:0] dout
+//Señales del teclado PS/2
+	input wire ps2d, ps2c, rx_en, //enable del módulo
+	output reg rx_done_tick, //Datos listos
+	output wire [7:0] dout //Dato leido
 );
+//Declaración simbólica de los estados
 localparam [1:0]
 	idle = 2'b00,
 	dps = 2'b01,
 	load = 2'b10;
+
+
 
 reg [1:0] state_reg, state_next;
 reg [7:0] filter_reg;
@@ -54,6 +60,7 @@ assign f_ps2c_next = 	(filter_reg == 8'hff) ? 1'b1 :
 			(filter_reg == 8'h00) ? 1'b0 :
 			f_ps2c_reg;
 assign fall_edge = f_ps2c_reg & ~f_ps2c_next;
+
 always @(posedge clk, posedge reset)
 begin
 	if (reset)
@@ -70,6 +77,8 @@ begin
 	end
 end
 
+//Este módulo únicamente guarda los 8bits del mensaje, no registra el bit de inicio, parada o paridad.
+
 always @*
 begin
 	state_next = state_reg;
@@ -80,7 +89,6 @@ begin
 	idle:
 		if(fall_edge & rx_en)
 		begin
-//b_next ={ps2d, b_reg[10:1]};
 			n_next = 4'b1001;
 			state_next = dps;
 		end
