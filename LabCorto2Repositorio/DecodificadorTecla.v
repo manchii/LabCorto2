@@ -28,16 +28,18 @@ module DecodificadorTecla(
 	input wire [1:0] EstadoTipoDato,
 	//Señal clk y rst
 	input wire clk,rst,
-	//variables programables
+	//Variables programables
 	output wire [4:0] temperatura,
 	output wire ignicion,
 	output wire presencia
     );
+//Declaración simbólica para la captura del tipo de dato
 localparam [1:0]
 	temp = 2'h1,
 	ign = 2'h2,
 	pres = 2'h3;
 
+//Declaración de los registros para guardar los datos para guardar
 reg [4:0] temp_reg, temp_sig;
 reg ign_reg, ign_sig;
 reg pres_reg, pres_sig;
@@ -65,9 +67,11 @@ wire yn_deco;
 		temp_sig = temp_reg;
 		ign_sig = ign_reg;
 		pres_sig = pres_reg;
-		if(salvar)
+		if(salvar)//Si se recibe el permiso para salvar, guarda el dato entrante 
 		begin
-			case(EstadoTipoDato)
+		//Se selecciona al registro para guardar de acuerdo a la variable de tipo de dato
+			case(EstadoTipoDato) 
+			
 				temp:
 					temp_sig = temp_deco;
 				ign:
